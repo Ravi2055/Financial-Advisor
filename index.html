@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Investment Suggestion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        label, input, button, p {
+            display: block;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Investment Suggestion</h1>
+        <label for="savings">Enter your savings:</label>
+        <input type="number" id="savings" required>
+        <button onclick="suggestInvestment()">Get Investment Suggestions</button>
+        <p id="suggestion"></p>
+        <canvas id="portfolioChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        function suggestInvestment() {
+            const savings = parseFloat(document.getElementById('savings').value);
+
+            if (isNaN(savings)) {
+                document.getElementById('suggestion').textContent = "Please enter a valid savings amount.";
+                return;
+            }
+
+            let suggestion = "Here are some investment suggestions based on your savings:\n\n";
+
+            if (savings < 1000) {
+                suggestion += "1. Consider opening a high-yield savings account.\n";
+                suggestion += "2. Invest in a small-cap stock fund with a long-term horizon (5+ years).\n";
+            } else if (savings >= 1000 && savings < 5000) {
+                suggestion += "1. Open a high-yield savings account.\n";
+                suggestion += "2. Start a small investment portfolio with low-risk assets like bonds (3-5 years).\n";
+                suggestion += "3. Consider investing in technology stocks for potential growth (3-5 years).\n";
+            } else if (savings >= 5000 && savings < 10000) {
+                suggestion += "1. Diversify your investment portfolio with a mix of stocks, bonds, and mutual funds (5-10 years).\n";
+                suggestion += "2. Explore tax-advantaged retirement accounts like a 401(k) or IRA (long-term).\n";
+                suggestion += "3. Consider the healthcare sector for potential long-term growth (5-10 years).\n";
+            } else if (savings >= 10000 && savings < 50000) {
+                suggestion += "1. Invest in a diversified portfolio of stocks and bonds for potential growth (10+ years).\n";
+                suggestion += "2. Consider real estate investment through REITs (Real Estate Investment Trusts) (5-10 years).\n";
+                suggestion += "3. Explore opportunities in renewable energy and clean technology (5-10 years).\n";
+            } else {
+                suggestion += "1. Consult with a financial advisor to create a comprehensive investment strategy tailored to your goals (long-term).\n";
+                suggestion += "2. Explore various investment options including stocks, bonds, real estate, and retirement accounts (10+ years).\n";
+                suggestion += "3. Consider diversifying your portfolio across different sectors, including technology, healthcare, and consumer goods (10+ years).\n";
+            }
+
+            document.getElementById('suggestion').textContent = suggestion;
+
+            // Generate a simple portfolio growth chart (example data)
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            const years = Array.from({ length: 10 }, (_, i) => i + 1);
+            const portfolioValue = years.map(year => savings * Math.pow(1.05, year)); // Example: 5% annual growth
+            const labels = years.map(year => `Year ${year}`);
+
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Portfolio Value',
+                        data: portfolioValue,
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
